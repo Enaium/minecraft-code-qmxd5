@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "compatibilityLevel": "JAVA_8",
+  "package": "cn.enaium.learn.qmxd.mixins",
+  "refmap": "mixins.qmxd.refmap.json",
+  "mixins": [
+    "MinecraftMixin"
+  ]
+}

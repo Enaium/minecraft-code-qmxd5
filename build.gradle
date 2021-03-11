@@ -1,0 +1,102 @@
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://repo.spongepowered.org/maven' }
+        maven { url 'https://files.minecraftforge.net/maven' }
+        maven { url 'https://jitpack.io' }
+    }
+    dependencies {
+        classpath 'com.gitee.Enaium:ForgeGradle26:26'
+        classpath 'org.spongepowered:mixingradle:0.6-SNAPSHOT'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'net.minecraftforge.gradle.tweaker-client'
+apply plugin: 'org.spongepowered.mixin'
+
+group 'cn.enaium.learn'
+version "${project.buildVersion}-MC${project.mcVersion}"
+archivesBaseName = 'QMXD'
+def id = "qmxd"
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+    maven { url 'https://libraries.minecraft.net/' }
+    maven { url 'https://repo.spongepowered.org/maven/' }
+    maven { url 'https://jitpack.io' }
+    maven { url 'https://maven.enaium.cn' }
+}
+
+dependencies {
+    implementation('org.spongepowered:mixin:0.8') { transitive = false }
+    implementation('net.minecraft:launchwrapper:1.12') { transitive = false }
+    implementation 'org.ow2.asm:asm-tree:6.2'
+    implementation 'org.ow2.asm:asm-commons:6.2'
+    implementation "org.ow2.asm:asm-util:6.2"
+
+    implementation("cn.enaium.cf4m:cf4m:${project.cf4mVersion}") {
+        exclude group: 'com.google.guava', module: 'guava'
+    }
+}
+
+minecraft {
+    version = "${project.mcVersion}"
+    mappings = 'stable_60'
+    runDir = 'run'
+    tweakClass = "${project.group}.${id}.launch.ClientTweaker"
+    makeObfSourceJar = false
+}
+
+mixin {
+    defaultObfuscationEnv notch
+    add sourceSets.main, "mixins.${id}.refmap.json"
+}
+
+sourceSets {
+    main
+    debug {
+        compileClasspath += main.compileClasspath
+    }
+}
+
+processResources {
+    filesMatching('profile.json') {
+        expand([
+                'version'         : project.version,
+                'archivesBaseName': archivesBaseName,
+                'group'           : project.group,
+                'cf4mVersion'     : project.cf4mVersion,
+                'mcVersion'       : project.mcVersion,
+                'tweakClass'      : project.minecraft.tweakClass,
+                'formattedTime'   : new Date().format("yyyy-MM-dd'T'HH:mm:ss'-08:00'")
+        ])
+    }
+
+    inputs.property "version", project.version
+    inputs.property "mcVersion", project.mcVersion
+}
+
+jar {
+    manifest {
+        attributes([
+                "Main-Class"              : "${project.group}.${id}.Main",
+                "Specification-Title"     : "${archivesBaseName}",
+                "Specification-Vendor"    : "Enaium",
+                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Title"    : "${archivesBaseName}",
+                "Implementation-Version"  : "${project.version}",
+                "Implementation-Vendor"   : "${project.group}",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
+    classifier = 'vanilla'
+}
+
+artifacts {
+    archives jar
+}
