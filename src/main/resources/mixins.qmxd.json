@@ -5,8 +5,10 @@
   "package": "cn.enaium.learn.qmxd.mixins",
   "refmap": "mixins.qmxd.refmap.json",
   "mixins": [
-    "MinecraftMixin",
     "ClientPlayerEntityMixin",
-    "KeyboardListenerMixin"
+    "IMinecraft",
+    "IngameGuiMixin",
+    "KeyboardListenerMixin",
+    "MinecraftMixin"
   ]
 }
