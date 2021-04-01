@@ -32,7 +32,9 @@ public class MainScreen extends Screen {
             } else {
                 this.minecraft.displayGuiScreen(new MultiplayerWarningScreen(this));
             }
-
+        }));
+        this.addButton(new Button(this.width / 2 - 100, height / 2 + 80, 200, 20, I18n.format("menu.quit", new Object[0]), (p_213094_1_) -> {
+            this.minecraft.shutdown();
         }));
         super.init();
     }

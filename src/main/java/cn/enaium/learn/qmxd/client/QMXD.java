@@ -15,6 +15,6 @@ public enum QMXD {
     public String VERSION = "5";
 
     public void run() {
-        CF4M.INSTANCE.run(this);
+        CF4M.run(this);
     }
 }

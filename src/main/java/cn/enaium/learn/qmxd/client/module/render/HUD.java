@@ -1,13 +1,15 @@
-package cn.enaium.learn.qmxd.client.modules.render;
+package cn.enaium.learn.qmxd.client.module.render;
 
 import cn.enaium.cf4m.CF4M;
 import cn.enaium.cf4m.annotation.Event;
 import cn.enaium.cf4m.annotation.Setting;
 import cn.enaium.cf4m.annotation.module.Module;
 import cn.enaium.cf4m.module.Category;
+import cn.enaium.cf4m.provider.ModuleProvider;
 import cn.enaium.learn.qmxd.client.QMXD;
-import cn.enaium.learn.qmxd.client.events.Render2DEvent;
-import cn.enaium.learn.qmxd.client.settings.EnableSetting;
+import cn.enaium.learn.qmxd.client.event.Events;
+import cn.enaium.learn.qmxd.client.event.Events.Render2DEvent;
+import cn.enaium.learn.qmxd.client.setting.EnableSetting;
 import cn.enaium.learn.qmxd.mixins.IMinecraft;
 import net.minecraft.client.MainWindow;
 import net.minecraft.client.Minecraft;
@@ -44,13 +46,13 @@ public class HUD {
         if (!list.getEnable())
             return;
 
-        ArrayList<Object> mods = CF4M.INSTANCE.module.getModules();
+        ArrayList<ModuleProvider> mods = CF4M.module.getAll();
         MainWindow mainWindow = ((IMinecraft) Minecraft.getInstance()).getMainWindow();
         int index = 0;
-        for (Object mod : mods) {
-            if (!CF4M.INSTANCE.module.getEnable(mod))
+        for (ModuleProvider mod : mods) {
+            if (!mod.getEnable())
                 continue;
-            String name = CF4M.INSTANCE.module.getName(mod);
+            String name = mod.getName();
             Minecraft.getInstance().fontRenderer.drawStringWithShadow(name, mainWindow.getScaledWidth() - Minecraft.getInstance().fontRenderer.getStringWidth(name), index, 0xFFFFFF);
             index += Minecraft.getInstance().fontRenderer.FONT_HEIGHT;
         }

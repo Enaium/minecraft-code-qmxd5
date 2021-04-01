@@ -1,6 +1,7 @@
 package cn.enaium.learn.qmxd.mixins;
 
-import cn.enaium.cf4m.event.events.KeyboardEvent;
+import cn.enaium.cf4m.CF4M;
+import cn.enaium.learn.qmxd.client.event.Events;
 import net.minecraft.client.KeyboardListener;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
@@ -19,7 +20,8 @@ public class KeyboardListenerMixin {
     @Inject(at = @At("HEAD"), method = "onKeyEvent")
     private void onKeyEvent(long window, int key, int p_onKeyEvent_4_, int action, int p_onKeyEvent_6_, CallbackInfo callbackInfo) {
         if (Minecraft.getInstance().currentScreen == null && action == GLFW.GLFW_PRESS) {
-            new KeyboardEvent(key).call();
+            CF4M.module.onKey(key);
+            new Events.KeyboardEvent(key).call();
         }
     }
 }

@@ -1,6 +1,6 @@
 package cn.enaium.learn.qmxd.mixins;
 
-import cn.enaium.cf4m.event.events.UpdateEvent;
+import cn.enaium.learn.qmxd.client.event.Events;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -16,6 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class ClientPlayerEntityMixin {
     @Inject(at = @At("HEAD"), method = "tick")
     private void tick(CallbackInfo callbackInfo) {
-        new UpdateEvent().call();
+        new Events.UpdateEvent().call();
     }
 }

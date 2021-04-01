@@ -1,4 +1,4 @@
-package cn.enaium.learn.qmxd.client.modules.render;
+package cn.enaium.learn.qmxd.client.module.render;
 
 import cn.enaium.cf4m.annotation.module.Disable;
 import cn.enaium.cf4m.annotation.module.Enable;
